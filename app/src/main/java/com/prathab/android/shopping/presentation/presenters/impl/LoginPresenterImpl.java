@@ -6,6 +6,7 @@ import com.prathab.android.shopping.domain.repository.LoginRepository;
 import com.prathab.android.shopping.presentation.presenters.LoginPresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -26,17 +27,23 @@ public class LoginPresenterImpl implements LoginPresenter {
    * {@inheritDoc}
    */
   @Override public void login(String mobile, String password) {
-    mView.showProgress();
 
     LoginInteractor loginInteractor = new LoginInteractorImpl(mLoginRepository);
     loginInteractor.login(mobile, password)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
         .doFinally(new Action() {
           @Override public void run() throws Exception {
             mView.hideProgress();
+            mView.unlockInput();
           }
         })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(new Consumer<Disposable>() {
+          @Override public void accept(@NonNull Disposable disposable) throws Exception {
+            mView.lockInput();
+            mView.showProgress();
+          }
+        })
         .subscribe(new Consumer<String>() {
           @Override public void accept(@NonNull String s) throws Exception {
             mView.displayLoginSuccess(s);
