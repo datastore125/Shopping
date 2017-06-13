@@ -35,5 +35,15 @@ public interface LoginPresenter {
      * Method to hide progress after login response
      */
     void hideProgress();
+
+    /**
+     * Method to lock the button during network call
+     */
+    void lockInput();
+
+    /**
+     * Method to unlock the button during network call
+     */
+    void unlockInput();
   }
 }

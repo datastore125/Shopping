@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 public class Login extends AppCompatActivity implements LoginPresenter.View {
   @BindView(R.id.editTextMobile) EditText editTextMobile;
   @BindView(R.id.editTextPassword) EditText editTextPassword;
+  @BindView(R.id.buttonLogin) Button buttonLogin;
   ProgressDialog progressDialog = null;
   AlertDialog.Builder builder = null;
   @Inject LoginRepository mLoginRepository;
@@ -76,5 +78,13 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
 
   @Override public void hideProgress() {
     progressDialog.dismiss();
+  }
+
+  @Override public void lockInput() {
+    buttonLogin.setEnabled(false);
+  }
+
+  @Override public void unlockInput() {
+    buttonLogin.setEnabled(true);
   }
 }
