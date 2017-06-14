@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
   @Override public void displayLoginSuccess(String message) {
     //TODO Start MainActivity
     Toast.makeText(this, "Login Successful!!", Toast.LENGTH_SHORT).show();
-    //TODO finish();
+    //TODO call finish();
   }
 
   @Override public void displayLoginFailure(String error) {

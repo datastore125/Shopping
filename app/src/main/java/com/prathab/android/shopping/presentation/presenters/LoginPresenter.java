@@ -27,7 +27,7 @@ public interface LoginPresenter {
     void displayLoginFailure(String error);
 
     /**
-     * Method to show progress while loggin in
+     * Method to show progress while logging in
      */
     void showProgress();
 
