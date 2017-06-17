@@ -2,7 +2,9 @@ package com.prathab.android.shopping.dagger;
 
 import android.content.Context;
 import com.prathab.android.shopping.ShoppingApplication;
+import com.prathab.android.shopping.domain.repository.CreateAccountRepository;
 import com.prathab.android.shopping.domain.repository.LoginRepository;
+import com.prathab.android.shopping.storage.CreateAccountRepositoryImpl;
 import com.prathab.android.shopping.storage.LoginRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;
@@ -32,6 +34,11 @@ import static com.prathab.android.shopping.constants.SharedPreferencesConstants.
 
   @Provides @Inject LoginRepository provideLoginRepository(Context context) {
     return new LoginRepositoryImpl(
+        context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE));
+  }
+
+  @Provides @Inject CreateAccountRepository provideCreateAccountRepository(Context context) {
+    return new CreateAccountRepositoryImpl(
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE));
   }
 }
