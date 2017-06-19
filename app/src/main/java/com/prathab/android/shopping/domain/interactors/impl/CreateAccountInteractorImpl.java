@@ -3,10 +3,6 @@ package com.prathab.android.shopping.domain.interactors.impl;
 import com.prathab.android.shopping.domain.interactors.CreateAccountInteractor;
 import com.prathab.android.shopping.domain.repository.CreateAccountRepository;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 import static com.prathab.android.shopping.domain.repository.CreateAccountRepository.CreateAccountRepositoryException;
 import static com.prathab.android.shopping.domain.repository.CreateAccountRepository.CreateAccountRepositoryRequest;
