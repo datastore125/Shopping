@@ -25,7 +25,7 @@ public class LoginInteractorImpl implements LoginInteractor {
   /**
    * {@inheritDoc}
    */
-  @Override public Single<String> login(final String mobile, final String password) {
+  @Override public Single<String> execute(final String mobile, final String password) {
     return Single.create(new SingleOnSubscribe<String>() {
       @Override public void subscribe(@NonNull final SingleEmitter<String> e) throws Exception {
 

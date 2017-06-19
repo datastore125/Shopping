@@ -29,7 +29,7 @@ public class LoginPresenterImpl implements LoginPresenter {
   @Override public void login(String mobile, String password) {
 
     LoginInteractor loginInteractor = new LoginInteractorImpl(mLoginRepository);
-    loginInteractor.login(mobile, password)
+    loginInteractor.execute(mobile, password)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doFinally(new Action() {

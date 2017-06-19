@@ -8,8 +8,8 @@ import android.app.Activity;
 public interface CreateAccountPresenter {
   /**
    * @param name Name entered by the user
-   * @param mobile Mobile number entered by user which will be used for createAccount
-   * @param password Password entered by user which will be used for createAccount
+   * @param mobile Mobile number entered by user which will be used for execute
+   * @param password Password entered by user which will be used for execute
    */
   void createAccount(String name, String mobile, String password);
 
@@ -18,12 +18,12 @@ public interface CreateAccountPresenter {
    */
   interface View {
     /**
-     * @param message createAccount success message which will be displayed on UI
+     * @param message execute success message which will be displayed on UI
      */
     void displayCreateAccountSuccess(String message);
 
     /**
-     * @param error createAccount Failure message which will be displayed on UI
+     * @param error execute Failure message which will be displayed on UI
      */
     void displayCreateAccountFailure(String error);
 
@@ -33,7 +33,7 @@ public interface CreateAccountPresenter {
     void showProgress();
 
     /**
-     * Method to hide progress after createAccount response
+     * Method to hide progress after execute response
      */
     void hideProgress();
 

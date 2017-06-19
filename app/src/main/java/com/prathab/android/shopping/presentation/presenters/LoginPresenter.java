@@ -32,7 +32,7 @@ public interface LoginPresenter {
     void showProgress();
 
     /**
-     * Method to hide progress after login response
+     * Method to hide progress after execute response
      */
     void hideProgress();
 

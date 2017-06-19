@@ -30,7 +30,7 @@ public class CreateAccountPresenterImpl implements CreateAccountPresenter {
 
     CreateAccountInteractor createAccountInteractor =
         new CreateAccountInteractorImpl(mCreateAccountRepository);
-    createAccountInteractor.createAccount(name, mobile, password)
+    createAccountInteractor.execute(name, mobile, password)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doFinally(new Action() {

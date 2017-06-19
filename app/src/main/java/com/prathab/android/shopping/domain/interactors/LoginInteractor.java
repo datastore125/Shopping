@@ -12,10 +12,10 @@ public interface LoginInteractor {
    * onSuccess and {@link LoginInteractorException} is thrown in onError
    * @see LoginInteractorException
    */
-  Single<String> login(String mobile, String password);
+  Single<String> execute(String mobile, String password);
 
   /**
-   * Throwable class which will be thrown in onError of {@link Subscriber} if login failed, along
+   * Throwable class which will be thrown in onError of {@link Subscriber} if execute failed, along
    * with the failure reason as a plain
    * text
    */

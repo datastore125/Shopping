@@ -25,7 +25,7 @@ public class CreateAccountInteractorImpl implements CreateAccountInteractor {
   /**
    * {@inheritDoc}
    */
-  @Override public Single<String> createAccount(final String name, final String mobile,
+  @Override public Single<String> execute(final String name, final String mobile,
       final String password) {
 
     return Single.create(new SingleOnSubscribe<String>() {

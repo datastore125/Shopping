@@ -13,10 +13,10 @@ public interface CreateAccountInteractor {
    * onSuccess and {@link CreateAccountInteractorException} is thrown in onError
    * @see CreateAccountInteractorException
    */
-  Single<String> createAccount(String name, String mobile, String password);
+  Single<String> execute(String name, String mobile, String password);
 
   /**
-   * Throwable class which will be thrown in onError of {@link Subscriber} if createAccount failed,
+   * Throwable class which will be thrown in onError of {@link Subscriber} if execute failed,
    * along
    * with the failure reason as a plain
    * text
