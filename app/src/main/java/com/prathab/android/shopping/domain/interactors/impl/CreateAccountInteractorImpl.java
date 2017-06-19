@@ -28,41 +28,29 @@ public class CreateAccountInteractorImpl implements CreateAccountInteractor {
   @Override public Single<String> execute(final String name, final String mobile,
       final String password) {
 
-    return Single.create(new SingleOnSubscribe<String>() {
-      @Override public void subscribe(@NonNull final SingleEmitter<String> e) throws Exception {
+    return Single.create(e -> mCreateAccountRepository.createAccount(
+        new CreateAccountRepositoryRequest(name, mobile, password))
+        .subscribe(createAccountRepositoryResponse -> e.onSuccess("Successfully Created Account"),
+            throwable -> {
 
-        mCreateAccountRepository.createAccount(
-            new CreateAccountRepositoryRequest(name, mobile, password))
-            .subscribe(new Consumer<CreateAccountRepository.CreateAccountRepositoryResponse>() {
-              @Override public void accept(@NonNull
-                  CreateAccountRepository.CreateAccountRepositoryResponse createAccountRepositoryResponse)
-                  throws Exception {
-                e.onSuccess("Successfully Created Account");
+              switch (throwable.getMessage()) {
+                case "1":
+                  //Represents Invalid input detected without network call
+                  e.onError(new CreateAccountRepositoryException("Enter Valid Details"));
+                  break;
+                case "400":
+                  e.onError(new CreateAccountRepositoryException("Check your detail"));
+                  break;
+                case "409":
+                  e.onError(new CreateAccountRepositoryException("Account Already Exists"));
+                  break;
+                case "404":
+                  e.onError(new CreateAccountRepositoryException("Please try again later"));
+                  break;
+                default:
+                  e.onError(new CreateAccountRepositoryException("Unexpected Error"));
+                  break;
               }
-            }, new Consumer<Throwable>() {
-              @Override public void accept(@NonNull Throwable throwable) throws Exception {
-
-                switch (throwable.getMessage()) {
-                  case "1":
-                    //Represents Invalid input detected without network call
-                    e.onError(new CreateAccountRepositoryException("Enter Valid Details"));
-                    break;
-                  case "400":
-                    e.onError(new CreateAccountRepositoryException("Check your detail"));
-                    break;
-                  case "409":
-                    e.onError(new CreateAccountRepositoryException("Account Already Exists"));
-                    break;
-                  case "404":
-                    e.onError(new CreateAccountRepositoryException("Please try again later"));
-                    break;
-                  default:
-                    e.onError(new CreateAccountRepositoryException("Unexpected Error"));
-                    break;
-                }
-              }
-            });
-      }
-    });
+            }));
   }
 }

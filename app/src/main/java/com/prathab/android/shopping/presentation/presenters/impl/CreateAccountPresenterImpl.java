@@ -5,10 +5,6 @@ import com.prathab.android.shopping.domain.interactors.impl.CreateAccountInterac
 import com.prathab.android.shopping.domain.repository.CreateAccountRepository;
 import com.prathab.android.shopping.presentation.presenters.CreateAccountPresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -33,26 +29,15 @@ public class CreateAccountPresenterImpl implements CreateAccountPresenter {
     createAccountInteractor.execute(name, mobile, password)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doFinally(new Action() {
-          @Override public void run() throws Exception {
-            mView.hideProgress();
-            mView.unlockInput();
-          }
+        .doFinally(() -> {
+          mView.hideProgress();
+          mView.unlockInput();
         })
-        .doOnSubscribe(new Consumer<Disposable>() {
-          @Override public void accept(@NonNull Disposable disposable) throws Exception {
-            mView.lockInput();
-            mView.showProgress();
-          }
+        .doOnSubscribe(disposable -> {
+          mView.lockInput();
+          mView.showProgress();
         })
-        .subscribe(new Consumer<String>() {
-          @Override public void accept(@NonNull String s) throws Exception {
-            mView.displayCreateAccountSuccess(s);
-          }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(@NonNull Throwable throwable) throws Exception {
-            mView.displayCreateAccountFailure(throwable.getMessage());
-          }
-        });
+        .subscribe(s -> mView.displayCreateAccountSuccess(s),
+            throwable -> mView.displayCreateAccountFailure(throwable.getMessage()));
   }
 }

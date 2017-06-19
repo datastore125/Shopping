@@ -1,7 +1,6 @@
 package com.prathab.android.shopping.presentation.ui.activities;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +16,7 @@ import com.prathab.android.shopping.network.services.AccountsService;
 import com.prathab.android.shopping.utility.Validators;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
@@ -56,33 +53,29 @@ public class ForgotPassword extends AppCompatActivity {
 
     forgotPasswordDisposable = responseObservable.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<Response<Users>>() {
-          @Override public void accept(@NonNull Response<Users> usersResponse) throws Exception {
-            progressDialog.dismiss();
-            switch (usersResponse.code()) {
-              case 200:
-                forgotPasswordSuccessful(usersResponse);
-                break;
-              case 401:
-                builder.setMessage("You did not update email address");
-                break;
-              case 404:
-                builder.setMessage("Please try again later");
-                break;
-              default:
-                builder.setMessage("Unexpected Error");
-                break;
-            }
-            if (usersResponse.code() != 200) {
-              builder.create().show();
-            }
+        .subscribe(usersResponse -> {
+          progressDialog.dismiss();
+          switch (usersResponse.code()) {
+            case 200:
+              forgotPasswordSuccessful(usersResponse);
+              break;
+            case 401:
+              builder.setMessage("You did not update email address");
+              break;
+            case 404:
+              builder.setMessage("Please try again later");
+              break;
+            default:
+              builder.setMessage("Unexpected Error");
+              break;
           }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(@NonNull Throwable throwable) throws Exception {
-            progressDialog.dismiss();
-            builder.setMessage(throwable.getLocalizedMessage());
+          if (usersResponse.code() != 200) {
             builder.create().show();
           }
+        }, throwable -> {
+          progressDialog.dismiss();
+          builder.setMessage(throwable.getLocalizedMessage());
+          builder.create().show();
         });
   }
 
@@ -97,11 +90,7 @@ public class ForgotPassword extends AppCompatActivity {
 
     new AlertDialog.Builder(this).setTitle("Successful")
         .setMessage("Check your email for instructions")
-        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-          @Override public void onClick(DialogInterface dialog, int which) {
-            finish();
-          }
-        })
+        .setPositiveButton("Okay", (dialog, which) -> finish())
         .create()
         .show();
   }
